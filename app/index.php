@@ -2,8 +2,38 @@
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
-$bookname = array ("harapeko","sannbiki","urashima","kakaka");
-$books = array("harapeko" => 0,"sannbiki" => 0,"urashima" => 1,"kakaka" => 1);
+define('DB_DATABASE', 'book_borrowing_app');
+define('DB_USERNAME', 'root');
+define('DB_PASSWORD', 'root');
+define('PDO_DSN', 'mysql:host=mysql;dbname=' . DB_DATABASE);
+
+try {
+    // connect
+    $db = new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD);
+    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // book_borrowing_appよりデータ取得
+    // books table
+    $stmt = $db->query("SELECT * FROM books");
+    $books = $stmt->fetchALL(PDO::FETCH_ASSOC);
+    // borrowing_histories table
+    $sql_query = "SELECT * FROM borrowing_histories AS m WHERE NOT EXISTS (SELECT id FROM borrowing_histories AS s WHERE m.book_id = s.book_id AND m.date < s.date)";
+    $stmt = $db->query($sql_query);
+    // $stmt = $db->prepare("SELECT * FROM borrowing_histories");
+    $b_histories = $stmt->fetchALL(PDO::FETCH_ASSOC);
+    // users table
+    // $stmt = $db->query("select * from users");
+    // $users = $stmt->fetchALL(PDO::FETCH_ASSOC);
+
+    foreach ($b_histories as $history) {
+        var_dump($history);
+        // echo $history['book_id'] . "\n";
+    }
+
+} catch (PDOException $e) {
+    echo $e->getMessage();
+    exit;
+}
 
 
 ?>
@@ -20,10 +50,10 @@ $books = array("harapeko" => 0,"sannbiki" => 0,"urashima" => 1,"kakaka" => 1);
         <h1>booklist</h1>
         <div class="booklist">
             <?php //　リストの表示予定 
-            foreach ($bookname as $value){
-                echo $value;
+            foreach ($books as $book){
+                echo $book['title'];
                 //ステータスが貸出し可能かどうか
-                if($books[$value] == 0){ 
+                if($book[$value] == 0){ 
                 ?>
             <form action = "management.php" method = "get">
                 <input type = "text" name = "username" ><br/>
