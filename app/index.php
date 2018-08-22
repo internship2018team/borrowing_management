@@ -13,22 +13,26 @@ try {
     $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     // book_borrowing_appよりデータ取得
-    // books table
-    $stmt = $db->query("SELECT * FROM books");
-    $books = $stmt->fetchALL(PDO::FETCH_ASSOC);
-    // borrowing_histories table
-    $sql_query = "SELECT * FROM borrowing_histories AS m WHERE NOT EXISTS (SELECT id FROM borrowing_histories AS s WHERE m.book_id = s.book_id AND m.date < s.date)";
+    $sql_query = 
+    "SELECT
+        title,
+        CASE
+        WHEN borrowable IS NULL THEN 1
+        ELSE borrowable
+        END AS borrowable
+    FROM (
+        SELECT *
+        FROM borrowing_histories AS m
+        WHERE NOT EXISTS (
+            SELECT id
+            FROM borrowing_histories AS s
+            WHERE m.book_id = s.book_id
+            AND m.date < s.date
+        ) )AS bh
+    RIGHT JOIN books 
+    ON bh.book_id = books.id";
     $stmt = $db->query($sql_query);
-    // $stmt = $db->prepare("SELECT * FROM borrowing_histories");
-    $b_histories = $stmt->fetchALL(PDO::FETCH_ASSOC);
-    // users table
-    // $stmt = $db->query("select * from users");
-    // $users = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-    foreach ($b_histories as $history) {
-        var_dump($history);
-        // echo $history['book_id'] . "\n";
-    }
+    $book_status = $stmt->fetchALL(PDO::FETCH_ASSOC);
 
 } catch (PDOException $e) {
     echo $e->getMessage();
@@ -50,16 +54,16 @@ try {
         <h1>booklist</h1>
         <div class="booklist">
             <?php //　リストの表示予定 
-            foreach ($books as $book){
+            foreach ($book_status as $book){
                 echo $book['title'];
                 //ステータスが貸出し可能かどうか
-                if($book[$value] == 0){ 
+                if($book['borrowable'] == 0){ 
                 ?>
             <form action = "management.php" method = "get">
                 <input type = "text" name = "username" ><br/>
                 <input type = "submit" value = "借りる">
             </form>
-            <?php  }else if($books[$value] == 1){ ?>
+            <?php  }else if($book['borrowable'] == 1){ ?>
             <form action = "management.php" method = "get">
                 <input type = "submit" value ="返却">
             </form>
