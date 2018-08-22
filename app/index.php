@@ -2,7 +2,7 @@
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
 
-define('DB_DATABASE', 'book_borrowing_app');
+define('DB_DATABASE', 'book_management');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'root');
 define('PDO_DSN', 'mysql:host=mysql;dbname=' . DB_DATABASE);
@@ -38,7 +38,28 @@ try {
     echo $e->getMessage();
     exit;
 }
+?>
 
+<?php
+//貸出し返却のためのDB操作
+try {
+  if(isset($_GET["userid"])){
+    $db->beginTransaction();
+    // ここにborrow_historiesのinsertを書く
+
+    $db->commit();
+  }else{
+    $db->beginTransaction();
+    // ここにborrow_historiesのupdateを書く
+  
+    $db->commit();
+  }
+
+}catch(PDOException $e){
+    $db->rollback();
+    echo $e->getMessage();
+    exit;
+}
 
 ?>
 
@@ -57,15 +78,19 @@ try {
             foreach ($book_status as $book){
                 echo $book['title'];
                 //ステータスが貸出し可能かどうか
-                if($book['borrowable'] == 0){ 
+                if($book['borrowable'] == 1){ 
                 ?>
-            <form action = "management.php" method = "get">
-                <input type = "text" name = "username" ><br/>
+            <form action = "index.php" method = "get">
+                <input type = "text" name = "userid" ><br/>
+                <!--  $book['title'];はidをとることができるものに置き換える -->
+                <input type = "hidden" name = "book_id" value = "<?= $book['title']; ?>">
                 <input type = "submit" value = "借りる">
             </form>
-            <?php  }else if($book['borrowable'] == 1){ ?>
-            <form action = "management.php" method = "get">
-                <input type = "submit" value ="返却">
+            <?php  }elseif($book['borrowable'] == 0){ ?>
+            <form action = "index.php" method = "get">
+                <!--  $book['title'];はidをとることができるものに置き換える -->
+                <input type = "hidden" name = "book_id" value = "<?= $book['title']; ?>">
+                <input type = "submit" value = "返却">
             </form>
             <?php  } 
             } ?>
