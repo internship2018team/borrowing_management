@@ -1,8 +1,8 @@
 <?php
 ini_set("display_errors", 1);
 error_reporting(E_ALL);
-
-define('DB_DATABASE', 'book_management');
+//自分のDBNAMEに変更するのを忘れない
+define('DB_DATABASE', 'book_borrowing_app');
 define('DB_USERNAME', 'root');
 define('DB_PASSWORD', 'root');
 define('PDO_DSN', 'mysql:host=mysql;dbname=' . DB_DATABASE);
@@ -43,7 +43,7 @@ try {
 <?php
 //貸出し返却のためのDB操作
 try {
-  if(isset($_GET["userid"])){
+  if(isset($_GET["user_id"])){
     $db->beginTransaction();
     // ここにborrow_historiesのinsertを書く
 
@@ -81,7 +81,7 @@ try {
                 if($book['borrowable'] == 1){ 
                 ?>
             <form action = "index.php" method = "get">
-                <input type = "text" name = "userid" ><br/>
+                <input type = "text" name = "user_id" ><br/>
                 <!--  $book['title'];はidをとることができるものに置き換える -->
                 <input type = "hidden" name = "book_id" value = "<?= $book['title']; ?>">
                 <input type = "submit" value = "借りる">
