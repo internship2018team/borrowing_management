@@ -1,78 +1,21 @@
 <?php
-require_once(__DIR__ . '/config.php');
+require_once(dirname(__FILE__) ."/../server/config.php");
+require_once(dirname(__FILE__) ."/../server/management.php");
 
 
-try {
-    // connect
-    $db = new PDO(PDO_DSN, DB_USERNAME, DB_PASSWORD);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+$booklist = new \MyApp\Borrow_book();
 
-    // book_borrowing_appよりデータ取得
-    // 本のタイトル、id、historyのid、貸し出し状況をget
-    $sql_query = 
-    "SELECT
-        title,
-        books.id AS book_id,
-        bh.id AS history_id,
-        CASE
-        WHEN borrowable IS NULL THEN 1
-        ELSE borrowable
-        END AS borrowable
-    FROM (
-        SELECT *
-        FROM borrowing_histories AS m
-        WHERE NOT EXISTS (
-            SELECT id
-            FROM borrowing_histories AS s
-            WHERE m.book_id = s.book_id
-            AND m.date < s.date
-        ) )AS bh
-    RIGHT JOIN books 
-    ON bh.book_id = books.id";
-    $stmt = $db->query($sql_query);
-    $book_status = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-    // usersテーブルの情報を取得
-    $sql_query = "SELECT * FROM users";
-    $stmt = $db->query($sql_query);
-    $users = $stmt->fetchALL(PDO::FETCH_ASSOC);
-
-    // foreach ($users as $user) {
-    //     var_dump($user);
-    // }
-
-} catch (PDOException $e) {
-    echo $e->getMessage();
-    exit;
-}
-?>
-
-<?php
-//貸出し返却のためのDB操作
-try {
-  if(isset($_GET["user_id"])){
-    $db->beginTransaction();
-    // ここにborrow_historiesのinsertを書く
-    $stmt = $db->prepare("INSERT INTO borrowing_histories (book_id, user_id, borrowable) VALUES (:book_id, :user_id, :borrowable)");
-    $stmt->execute([
-        ':book_id' => $_GET["book_id"],
-        ':user_id' => $_GET["user_id"],
-        ':borrowable' => 0]);
-    $db->commit();
-  }else{
-    $db->beginTransaction();
-    // ここにborrow_historiesのupdateを書く
-    $stmt = $db->prepare("UPDATE borrowing_histories SET borrowable = 1 WHERE id = :history_id");
-    $stmt->execute([':history_id' => $_GET["history_id"]]);
-    $db->commit();
-  }
-
-}catch(PDOException $e){
-    $db->rollback();
-    echo $e->getMessage();
-    exit;
+/*
+if(isset($_POST["user_id"])){
+    $booklist->BookBorrow($_POST["book_id"],$_POST["user_id]");
+}else{
 }
 
+*/
+
+
+$book_status = $booklist->getLatestBooks();
+$book_status = json_decode(json_encode($book_status), true);
 ?>
 
 <!DOCTYPE html>
@@ -92,14 +35,14 @@ try {
                 //ステータスが貸出し可能かどうか
                 if($book['borrowable'] == 1){ 
                 ?>
-            <form action = "index.php" method = "get">
+            <form action = "index.php" method = "post">
                 <input type = "text" name = "user_id" ><br/>
                 <!--  $book['title'];はidをとることができるものに置き換える -->
                 <input type = "hidden" name = "book_id" value = "<?= $book['book_id']; ?>">
                 <input type = "submit" value = "借りる">
             </form>
             <?php  }elseif($book['borrowable'] == 0){ ?>
-            <form action = "index.php" method = "get">
+            <form action = "index.php" method = "post">
                 <!--  $book['title'];はidをとることができるものに置き換える -->
                 <!-- borrowing_historiesのidの方が更新処理にはいい -->
                 <input type = "hidden" name = "history_id" value = "<?= $book['history_id']; ?>">
