@@ -34,26 +34,25 @@ var_dump($book_status);
         <h1>booklist</h1>
         <div class="booklist">
             <?php //　リストの表示予定 
-            foreach ($book_status as $book){
-                echo $book['title'];
+            foreach ($book_status as $book) :
+              echo $book['title'];
                 //ステータスが貸出し可能かどうか
-                if($book['borrowable']){ 
-                ?>
-            <form action = "index.php" method = "post">
-                <input type = "text" name = "user_id" ><br/>
-                <!--  $book['title'];はidをとることができるものに置き換える -->
-                <input type = "hidden" name = "book_id" value = "<?= $book['book_id']; ?>">
-                <input type = "submit" value = "借りる">
-            </form>
-            <?php  }elseif(!$book['borrowable']){ ?>
-            <form action = "index.php" method = "post">
-                <!--  $book['title'];はidをとることができるものに置き換える -->
-                <!-- borrowing_historiesのidの方が更新処理にはいい -->
-                <input type = "hidden" name = "history_id" value = "<?= $book['history_id']; ?>">
-                <input type = "submit" value = "返却">
-            </form>
-            <?php  } 
-            } ?>
+              if($book['borrowable']) : ?>
+                <form action = "index.php" method = "post">
+                  <input type = "text" name = "user_id" ><br/>
+                  <!--  $book['title'];はidをとることができるものに置き換える -->
+                  <input type = "hidden" name = "book_id" value = "<?= $book['book_id']; ?>">
+                  <input type = "submit" value = "借りる">
+                </form>
+        <?php else : ?>
+                <form action = "index.php" method = "post">
+                  <!--  $book['title'];はidをとることができるものに置き換える -->
+                  <!-- borrowing_historiesのidの方が更新処理にはいい -->
+                  <input type = "hidden" name = "history_id" value = "<?= $book['history_id']; ?>">
+                  <input type = "submit" value = "返却">
+                </form>
+        <?php endif; 
+            endforeach; ?>
         </div>
     </body>
 </html>
