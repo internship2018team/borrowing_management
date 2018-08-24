@@ -21,6 +21,8 @@ class Borrow_book {
         title,
         books.id AS book_id,
         bh.id AS history_id,
+        bh.user_id AS user_id,
+        bh.date AS borrow_date,
         CASE
         WHEN borrowable IS NULL THEN 1
         ELSE borrowable
