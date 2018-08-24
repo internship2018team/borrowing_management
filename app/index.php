@@ -39,7 +39,7 @@ $user_status = $book->getUser();
                 <?php echo $book['title']; ?>
                 <!-- ステータスが貸出し可能かどうか -->
                 <!-- 貸し出し可能の場合 -->
-                <?php if($book['borrowable']) : ?>
+                <?php if($book['can_borrow']) : ?>
                 <form action="index.php" method="POST">
                     <!-- <input type="text" name="user_id" ><br/> -->
                     <select name="user_id">
