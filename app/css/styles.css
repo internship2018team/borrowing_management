@@ -82,3 +82,7 @@ td {
 #title { 
   font-size: 15pt;
 }
+
+#search_text {
+  text-align: right;
+}

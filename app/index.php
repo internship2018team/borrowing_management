@@ -13,14 +13,16 @@ if(isset($_POST["user_id"])){
     $book->BookReturn($_POST["history_id"]);
     header(HEADER);
 }
-
-
-// 本のタイトル、book_id、貸し出し状況、
-$book_status = $book->getLatestBooks();
+if(isset($_POST["query"])){
+    // 検索
+    $book_status = $book->BookSearch($_POST["query"]);
+}else {
+    // 本のタイトル、book_id、貸し出し状況を取得
+    $book_status = $book->getLatestBooks();
+}
+sort($book_status);
 $book_status = json_decode(json_encode($book_status), true);
-// var_dump($book_status);
 $user_status = $book->getUser();
-// var_dump($user_status);
 ?>
 
 <!DOCTYPE html>
@@ -34,6 +36,18 @@ $user_status = $book->getUser();
     </head>
     <body>
         <h1 class="page_name">BOOK LIST</h1>
+        <div id="search_text">
+            <form action="index.php" method="POST">
+                <input type="text" name="query" placeholder="検索">
+            </form>
+            <?php if(isset($_POST["query"])): ?>
+                <?php echo "検索結果 : " . $_POST["query"] ?>
+            <?php endif;?>
+            <form>
+                <input type="checkbox" name="state" checked>貸し出し可能
+                <input type="checkbox" name="state" checked>貸し出し不可
+            </form>
+        </div>
         <div class="booklist">
             <table>
                 <thead><tr><th>タイトル</th><th>借りている人</th><th>返却期限</th><th>貸し出しor返却</th></tr></thead>
@@ -68,9 +82,13 @@ $user_status = $book->getUser();
                                 <?php if($user['id'] == $user_id) : ?>
                                     <?php $limit_date = new Datetime($book['borrow_date']); ?>
                                     <!-- 返却期限は２週間後 -->
-                                    <?php $limitdate = $limit_date->modify('+2 weeks'); ?>
+                                    <?php $limit_date = $limit_date->modify('+2 weeks'); ?>
                                     <td><?php echo $user['name']; ?></td>
-                                    <td><?php echo $limit_date->format("Y/m/d(D)"); ?></td>
+                                    <?php if($limit_date > new Datetime(date("Y/m/d"))) : ?>
+                                        <td><?php echo $limit_date->format("Y/m/d(D)"); ?></td>
+                                    <?php else:?>
+                                        <td><font color='red'><?php echo $limit_date->format("Y/m/d(D)"); ?></font></td>
+                                    <?php endif;?>
                                 <?php endif;?>
                             <?php endforeach; ?>
                             <td><input type="submit" value="返却"></td>
