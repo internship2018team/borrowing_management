@@ -110,6 +110,8 @@
         }
     }
 
+    /*
     del.addEventListener('click',  () => {
         while (create.firstChild) create.removeChild(create.firstChild);
     },false);
+    */
