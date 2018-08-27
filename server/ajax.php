@@ -10,14 +10,29 @@ if(isset($_POST['name'])){
     // 登録データ取得予定
     $user_name = $_POST['name'];
     $book->addUser($user_name);
-    //受け取ったデータを判別してユーザーor本の登録をする
-
     //登録後に更新された一覧を取得して返す
-    $book_status = $book->getLatestBooks();
+    $user_lists = $book->getUsers();
     //ヘッダーの設定
     header('Content-type:application/json; charset=utf8');
-    //「$return_array」をjson_encodeして出力
     //第二引数はUnicodeにエンコードしないため
-    //echo json_encode($book_status, JSON_UNESCAPED_UNICODE);
-    echo json_encode($user_name, JSON_UNESCAPED_UNICODE);
+    echo json_encode($user_lists, JSON_UNESCAPED_UNICODE);
+}
+
+if(isset($_POST['title'])){
+    //ajax送信でPOSTされたデータを受け取る
+    // 登録データ取得予定
+    $book_name = $_POST['title'];
+    $book->addBook($book_name);
+    
+    $book_status = $book->getBooks();
+    header('Content-type:application/json; charset=utf8');
+
+    //第二引数はUnicodeにエンコードしないため
+    echo json_encode($book_status, JSON_UNESCAPED_UNICODE);
+}
+
+if(isset($_POST['push'])){
+    $booklist = $book->getBooks();
+    header('Content-type:application/json; charset=utf8');
+    echo json_encode($booklist, JSON_UNESCAPED_UNICODE);
 }

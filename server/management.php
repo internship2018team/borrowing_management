@@ -43,10 +43,19 @@ class Borrow_book {
     return $stmt->fetchAll(\PDO::FETCH_OBJ);
   }
 
+  //後でgetUsersに名前を変える
   public function getUser(){
     $sql_query = 
     "SELECT *
     FROM users";
+    $stmt = $this->_db->query($sql_query);
+    return $stmt->fetchALL(\PDO::FETCH_ASSOC);
+  }
+
+  public function getBooks(){
+    $sql_query = 
+    "SELECT *
+    FROM books";
     $stmt = $this->_db->query($sql_query);
     return $stmt->fetchALL(\PDO::FETCH_ASSOC);
   }
@@ -82,6 +91,15 @@ class Borrow_book {
     "INSERT INTO users (name) VALUES (:user_name)";
     $stmt = $this->_db->prepare($sql_query);
     $stmt->execute([':user_name' => $name]);
+    $this->_db->commit();
+  }
+
+  public function addBook($title){
+    $this->_db->beginTransaction();
+    $sql_query =
+    "INSERT INTO books (title) VALUES (:book_title)";
+    $stmt = $this->_db->prepare($sql_query);
+    $stmt->execute([':book_title' => $title]);
     $this->_db->commit();
   }
 

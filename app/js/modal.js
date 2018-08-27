@@ -28,7 +28,8 @@ window.onload = () => {
     mask.addEventListener('click', () => {
     // modal.className = 'hidden';
     // mask.className = 'hidden';
-        close[0].click();
-        close[1].click();
+        book_registration_modal.className = 'hidden';
+        user_registration_modal.className = 'hidden';
+        mask.className = 'hidden';  
     });
 };
