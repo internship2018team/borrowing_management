@@ -29,10 +29,10 @@
         ユーザー登録
     </div>
     <div id="user_registration_modal" class="hidden">
-        <form name="user_info">
+        <form name="user_info" method="post">
             <p>氏名 :<input type="text" name="book_name"></p>
             <p>チャットワークid :<input type="text" name="book_auther"></p>
-            <input type="submit" value="登録" onclick="checkText()">
+            <input id ="user_add" type="submit" value="登録" onclick="createUser()">
         </form>
         <div class="close">
             Close

@@ -28,6 +28,7 @@ window.onload = () => {
     mask.addEventListener('click', () => {
     // modal.className = 'hidden';
     // mask.className = 'hidden';
-        close.click();
+        close[0].click();
+        close[1].click();
     });
 };

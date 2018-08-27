@@ -76,4 +76,13 @@ class Borrow_book {
     $this->_db->commit();
   }
 
+  public function addUser($name){
+    $this->_db->beginTransaction();
+    $sql_query =
+    "INSERT INTO users (name) VALUES (:user_name)";
+    $stmt = $this->_db->prepare($sql_query);
+    $stmt->execute([':user_name' => $name]);
+    $this->_db->commit();
+  }
+
 }
