@@ -3,26 +3,26 @@ require_once(dirname(__FILE__) ."/../server/config.php");
 require_once(dirname(__FILE__) ."/../server/management.php");
 
 date_default_timezone_set('Asia/Tokyo');
-$book = new \MyApp\Borrow_book();
+$bookApp = new \MyApp\Borrow_book();
 
 //貸出し処理後にリロード挟む
-if(isset($_POST["user_id"])){
-    $book->BookBorrow($_POST["book_id"],$_POST["user_id"]);
+if (isset($_POST["user_id"])) {
+    $bookApp->BookBorrow($_POST["book_id"],$_POST["user_id"]);
     header(HEADER);
-}elseif(isset($_POST["history_id"])){
-    $book->BookReturn($_POST["history_id"]);
+} elseif (isset($_POST["history_id"])) {
+    $bookApp->BookReturn($_POST["history_id"]);
     header(HEADER);
 }
-if(isset($_POST["query"])){
+if (isset($_POST["search_query"])) {
     // 検索
-    $book_status = $book->BookSearch($_POST["query"]);
-}else {
+    $books = $bookApp->BookSearch($_POST["search_query"]);
+} else {
     // 本のタイトル、book_id、貸し出し状況を取得
-    $book_status = $book->getLatestBooks();
+    $books = $bookApp->getLatestBooks();
 }
-sort($book_status);
-$book_status = json_decode(json_encode($book_status), true);
-$user_status = $book->getUser();
+sort($books);
+$books = json_decode(json_encode($books), true);
+$users = $bookApp->getUser();
 ?>
 
 <!DOCTYPE html>
@@ -38,10 +38,10 @@ $user_status = $book->getUser();
         <h1 class="page_name">BOOK LIST</h1>
         <div id="search_text">
             <form action="index.php" method="POST">
-                <input type="text" name="query" placeholder="検索">
+                <input type="text" name="search_query" placeholder="検索">
             </form>
-            <?php if(isset($_POST["query"])): ?>
-                <?php echo "検索結果 : 『" . $_POST["query"] . "』 " . count($book_status) . "件"?>
+            <?php if(isset($_POST["search_query"])): ?>
+                <?php echo "検索結果 : 『" . $_POST["search_query"] . "』 " . count($books) . "件"?>
             <?php endif;?>
         </div>
         <div class="booklist">
@@ -51,19 +51,19 @@ $user_status = $book->getUser();
                 <thead><tr><th>タイトル</th><th>借りている人</th><th>返却期限</th><th>貸し出しor返却</th></tr></thead>
                 <tbody>
                     <!-- booklistの表示 -->
-                    <?php foreach ($book_status as $book) : ?>
+                    <?php foreach ($books as $book) : ?>
                         <!-- ステータスが貸出し可能かどうか -->
                         <!-- 貸し出し可能の場合 -->
-                        <?php if($book['can_borrow']) : ?>
+                        <?php if($book['can_borrow'] || $book['can_borrow'] == NULL) : ?>
                         <tr class='can_borrow'>
-                            <td id="title"><?php echo $book['title']; ?></td>
+                            <td class="title"><?php echo $book['title']; ?></td>
                             <td>-</td>
                             <td>-</td>
                             <td>
                             <form action="index.php" method="POST">
                                 <!-- <input type="text" name="user_id" ><br/> -->
                                 <select name="user_id">
-                                    <?php foreach ($user_status as $user) : ?>
+                                    <?php foreach ($users as $user) : ?>
                                     <option value=<?php echo $user['id']; ?>><?php echo $user['name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -75,20 +75,21 @@ $user_status = $book->getUser();
                         <!-- 貸し出し不可の場合 -->
                         <?php else : ?>
                         <tr class="cannot_borrow">
-                            <td id="title"><?php echo $book['title']; ?></td>
+                            <td class="title"><?php echo $book['title']; ?></td>
                             <form action="index.php" method="POST">
                                 <input type="hidden" name="history_id" value="<?= $book['history_id']; ?>">
                                 <?php $user_id = $book['user_id']; ?>
-                                <?php foreach ($user_status as $user) : ?>
-                                    <?php if($user['id'] == $user_id) : ?>
+                                <?php foreach ($users as $user) : ?>
+                                    <?php if ($user['id'] == $user_id) : ?>
                                         <?php $limit_date = new Datetime($book['borrow_date']); ?>
                                         <!-- 返却期限は２週間後 -->
                                         <?php $limit_date = $limit_date->modify('+2 weeks'); ?>
                                         <td><?php echo $user['name']; ?></td>
-                                        <?php if($limit_date > new Datetime(date("Y/m/d"))) : ?>
-                                            <td><?php echo $limit_date->format("Y/m/d(D)"); ?></td>
-                                        <?php else:?>
-                                            <td><font color='red'><?php echo $limit_date->format("Y/m/d(D)"); ?></font></td>
+                                        <?php if ($limit_date > new Datetime(date("Y/m/d"))) : ?>
+                                            <!-- JSTで表記 -->
+                                            <td><?php echo $limit_date->modify('+9 hours')->format("Y/m/d(D)"); ?></td>
+                                        <?php else :?>
+                                            <td><font color='red'><?php echo $limit_date->modify('+9 hours')->format("Y/m/d(D)"); ?></font></td>
                                         <?php endif;?>
                                     <?php endif;?>
                                 <?php endforeach; ?>
