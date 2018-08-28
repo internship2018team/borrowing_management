@@ -36,10 +36,19 @@ class Borrow_book {
     return $stmt->fetchAll(\PDO::FETCH_ASSOC);
   }
 
+  //後でgetUsersに名前を変える
   public function getUser(){
     $sql_query = 
     "SELECT *
     FROM users";
+    $stmt = $this->_db->query($sql_query);
+    return $stmt->fetchALL(\PDO::FETCH_ASSOC);
+  }
+
+  public function getBooks(){
+    $sql_query = 
+    "SELECT *
+    FROM books";
     $stmt = $this->_db->query($sql_query);
     return $stmt->fetchALL(\PDO::FETCH_ASSOC);
   }
@@ -68,6 +77,7 @@ class Borrow_book {
     $stmt->execute([':history_id' => $history_id]);
     $this->_db->commit();
   }
+<<<<<<< HEAD
   public function BookSearch($query){
     try {
       $sql_query = $this->query_get_book_state . " WHERE title LIKE :query";
@@ -82,6 +92,7 @@ class Borrow_book {
       exit;
     }
   }
+=======
 
   public function addUser($name){
     $this->_db->beginTransaction();
@@ -100,4 +111,6 @@ class Borrow_book {
     $stmt->execute([':book_title' => $title]);
     $this->_db->commit();
   }
+
+>>>>>>> e940c8eb07c9458f875a0335d76a5bf89e28689d
 }
