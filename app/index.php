@@ -2,7 +2,7 @@
 require_once(dirname(__FILE__) ."/../server/config.php");
 require_once(dirname(__FILE__) ."/../server/management.php");
 
-
+date_default_timezone_set('Asia/Tokyo');
 $book = new \MyApp\Borrow_book();
 
 //貸出し処理後にリロード挟む
