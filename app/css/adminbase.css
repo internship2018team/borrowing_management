@@ -62,6 +62,7 @@ body {
 
 .flex_column {
   flex-direction: column;
+  text-align: center;
   margin-top: 10px;
   margin-right:20px;
 }

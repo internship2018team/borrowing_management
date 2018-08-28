@@ -50,3 +50,19 @@ if(isset($_POST['push3'])){
     header('Content-type:application/json; charset=utf8');
     echo json_encode($sum, JSON_UNESCAPED_UNICODE);
 }
+
+if(isset($_POST['del_user_id'])){
+    $user_id = $_POST['del_user_id'];
+    $book->deleteUser($user_id);
+    $user_lists = $book->getUser();
+    header('Content-type:application/json; charset=utf8');
+    echo json_encode($user_lists, JSON_UNESCAPED_UNICODE);
+}
+
+if(isset($_POST['del_book_id'])){
+    $book_id = $_POST['del_book_id'];
+    $book->deleteBook($book_id);
+    $booklists = $book->getBooks();
+    header('Content-type:application/json; charset=utf8');
+    echo json_encode($booklists, JSON_UNESCAPED_UNICODE);
+}

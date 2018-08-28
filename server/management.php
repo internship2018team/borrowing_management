@@ -108,4 +108,22 @@ class Borrow_book {
     $stmt->execute([':book_title' => $title]);
     $this->_db->commit();
   }
+
+  public function deleteUser($id){
+    $this->_db->beginTransaction();
+    $sql_query =
+    "DELETE FROM users WHERE id = (:user_id)";
+    $stmt = $this->_db->prepare($sql_query);
+    $stmt->execute([':user_id' => $id]);
+    $this->_db->commit();
+  }
+
+  public function deleteBook($id){
+    $this->_db->beginTransaction();
+    $sql_query =
+    "DELETE FROM books WHERE id = (:book_id)";
+    $stmt = $this->_db->prepare($sql_query);
+    $stmt->execute([':book_id' => $id]);
+    $this->_db->commit();
+  }
 }

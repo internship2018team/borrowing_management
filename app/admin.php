@@ -16,7 +16,7 @@
             <p>本の名前 :<input type="text" name="book_name"></p>
             <p>　　著者 :<input type="text" name="book_auther"></p>
             <p>ジャンル :<input type="text" name="book_genre"></p>
-            <input type="button" value="登録" onclick="registrationBook()">
+            <input type="button" value="登録" onclick="registerBook()">
         </form>
         <div class="close">
             Close
@@ -27,29 +27,16 @@
         <form id ="user_registration" name="user_info" method="post" return false;>
             <p>　　 氏名 :<input type="text" name="user_name"></p>
             <p>chatwork :<input type="text" name="user_auther"></p>
-            <input type="button" value="登録" onclick="registrationUser()">
+            <input type="button" value="登録" onclick="registerUser()">
         </form>
         <div class="close">
             Close
         </div>
     </div>
-    <!--
-    <button id="test">testuser</button>
-    <button id="test2">testbook</button>
-
-
-    <button id="del">del</button>
-      -->
     <div id="mask" class="hidden"></div>
     <div class = "block">
-            <div class="flex_column">
-                <div>ユーザー一覧</div>
-                <div id="user_hyoji"></div>
-            </div>
-            <div class="flex_column">
-                <div>book一覧</div>
-                <div id="book_hyoji"></div>
-            </div>
+            <table id="book_hyoji" class="flex_column" border="1"></table>
+            <table id="user_hyoji" class="flex_column" border="1"></table>
     </div>
     <script src="js/post_ajax.js"></script>
 </body>
