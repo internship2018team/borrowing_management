@@ -35,8 +35,14 @@
     </div>
     <div id="mask" class="hidden"></div>
     <div class = "block">
-            <table id="book_hyoji" class="flex_column" border="1"></table>
-            <table id="user_hyoji" class="flex_column" border="1"></table>
+        <div class="article_column">
+            <div>book一覧</div>
+            <table id="book_hyoji" class="flex_column"></table>
+        </div>
+        <div class="article_column">
+            <div>ユーザ一覧</div>
+            <table id="user_hyoji" class="flex_column"></table>
+        </div>
     </div>
     <script src="js/post_ajax.js"></script>
 </body>
