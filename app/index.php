@@ -35,7 +35,7 @@ $users = $bookApp->getUser();
         <link rel="stylesheet" href="css/styles.css">
     </head>
     <body>
-        <h1 class="page_name">BOOK LIST</h1>
+        <a href="http://localhost:8080/app/index.php"><h1 class="page_name">BOOK LIST</h1></a>
         <div id="search_text">
             <form action="index.php" method="POST">
                 <input type="text" name="search_query" placeholder="検索">

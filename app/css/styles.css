@@ -13,10 +13,10 @@ body {
   background: #ccc;
 }
 
-.booklist {
+/* .booklist {
   text-align: center;
-  /* color: #911A16; */
-}
+  color: #911A16;
+} */
 
 table {
   margin-left: auto;
@@ -47,4 +47,8 @@ input#isnot_borrowable[type=checkbox]:checked ~ * .cannot_borrow {
 /* チェックが入っていないときは表示しない*/
 .can_borrow, .cannot_borrow {
   visibility: collapse;
+}
+
+a {
+  text-decoration: none;
 }
