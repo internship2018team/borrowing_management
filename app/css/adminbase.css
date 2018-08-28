@@ -57,8 +57,11 @@ body {
 
 .block {
     display: flex;
+    justify-content: center;
 }
 
 .flex_column {
   flex-direction: column;
+  margin-top: 10px;
+  margin-right:20px;
 }
