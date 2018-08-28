@@ -44,6 +44,14 @@ class Borrow_book {
     return $stmt->fetchALL(\PDO::FETCH_ASSOC);
   }
 
+  public function getBooks(){
+    $sql_query = 
+    "SELECT *
+    FROM books";
+    $stmt = $this->_db->query($sql_query);
+    return $stmt->fetchALL(\PDO::FETCH_ASSOC);
+  }
+
   public function BookBorrow($book_id,$user_id){
     $this->_db->beginTransaction();
     $sql_query =
