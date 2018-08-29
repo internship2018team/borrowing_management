@@ -1,10 +1,9 @@
 window.onload = () => {
-  
     var book_registration_open = document.getElementById('book_registration_open');
     var user_registration_open = document.getElementById('user_registration_open');
-    var close = document.getElementsByClassName('close');
     var book_registration_modal = document.getElementById('book_registration_modal');
     var user_registration_modal = document.getElementById('user_registration_modal');
+    var close = document.getElementsByClassName('close');
     var mask = document.getElementById('mask');
 
     book_registration_open.addEventListener('click', () => {
