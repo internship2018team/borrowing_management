@@ -8,7 +8,7 @@
     var json;
     var arraybook = [];
     var arrayuser = [];
-    
+
     xhr.onreadystatechange = () =>  {
         if((xhr.status == 200) && (xhr.readyState == 4)){
             json = JSON.parse(xhr.responseText);
@@ -91,8 +91,8 @@
         while (indicatebook.firstChild) indicatebook.removeChild(indicatebook.firstChild);
         for(var i=0; i < books.length; i++) {
             var createtr = document.createElement('tr');
-            createtr.innerHTML = "<td>" + books[i].title + 
-            "</td><td><button onclick='deleteBook("+ books[i].id +")'>削除</button></td>"
+            createtr.innerHTML = "<td class='mdl-data-table__cell--non-numeric'>" + books[i].title + 
+            "</td><td class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' onclick='deleteBook("+ books[i].id +")'>削除</td>"
             indicatebook.appendChild(createtr);
         }
     }
@@ -111,7 +111,7 @@
     function confilmProcessing(){
         ret = confirm("実行します。本当によろしいですか?");
         if (ret == false){
-            exit;
+            preventDefault();
         }
     }
 

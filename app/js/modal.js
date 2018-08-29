@@ -7,11 +7,13 @@ window.onload = () => {
     var mask = document.getElementById('mask');
 
     book_registration_open.addEventListener('click', () => {
+        user_registration_modal.className = 'hidden';
         book_registration_modal.className = '';
         mask.className = '';
     });
 
     user_registration_open.addEventListener('click', () => {
+        book_registration_modal.className = 'hidden';
         user_registration_modal.className = '';
         mask.className = '';
     });
