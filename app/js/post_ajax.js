@@ -1,18 +1,14 @@
     let xhr = new XMLHttpRequest();
-    let user_add_button = document.getElementById('user_registration');
-    let test_button = document.getElementById('test');
-    let test_button2 = document.getElementById('test2');
-    let book_hyoji = document.getElementById('book_hyoji');
-    let create = document.getElementById('user_hyoji');
-    let del = document.getElementById('del');
-    
+    let indicateuser = document.getElementById('user_hyoji');
+    let indicatebook = document.getElementById('book_hyoji');
+    const post_url = "http://localhost:8080/server/ajax.php";
+
+
     // 処理用変数
     var syori_state = "init";
     var json;
-    var tmp,tmp2;
     var arraybook = [];
     var arrayuser = [];
-
 
     xhr.onreadystatechange = () =>  {
         if((xhr.status == 200) && (xhr.readyState == 4)){
@@ -21,70 +17,68 @@
             if(syori_state == "user"){
                 arrayuser = [];
                 for(var i=0; i < Object.keys(json).length; i++){
-                    tmp2 = json[i].name;
-                    arrayuser.push(tmp2);
+                    arrayuser.push(json[i]);
                 }
-                createTag2(arrayuser);
+                createTagUser(arrayuser);
             }else if(syori_state == "book"){
                 arraybook = [];
                 for(var i=0; i < Object.keys(json).length; i++){
-                    tmp = json[i].title;
-                    arraybook.push(tmp);
+                    arraybook.push(json[i]);
                 }
-                createTag(arraybook);
+                createTagBook(arraybook);
             }else{
                 arraybook = [];
                 arrayuser = [];
                 for(var i=0; i < Object.keys(json).length; i++){
-                    tmp = json[i].title;
-                    tmp2 = json[i].name;
-                    arraybook.push(tmp);
-                    arrayuser.push(tmp2);
+                    if(json[i].title == null){
+                        arrayuser.push(json[i]);
+                    }else{
+                        arraybook.push(json[i]);
+                    }
                 }
-                createTag(arraybook);
-                createTag2(arrayuser);
+                createTagBook(arraybook);
+                createTagUser(arrayuser);
             }
-            // 入力内容等の中身を削除する関数呼び出し予定
         }
     }
 
-
-
     //post部分
-    function registrationUser() {
-        xhr.open('post', 'http://localhost:8080/server/ajax.php',true);
+    function registerUser() {
+        confilmProcessing();
+        xhr.open('post', post_url,true);
         xhr.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
         xhr.send('name='+document.user_info.user_name.value);
         syori_state = "user";
+        clearText();
     }
 
-    function registrationBook(){
-        xhr.open('post', 'http://localhost:8080/server/ajax.php',true);
+    function registerBook(){
+        confilmProcessing();
+        xhr.open('post', post_url,true);
         xhr.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
         xhr.send('title='+document.book_info.book_name.value);
         syori_state = "book";
+        clearText();
     }
-    // 表示テスト用
-    /* 
-    test_button.addEventListener('click', () => {
-        xhr.open('post', 'http://localhost:8080/server/ajax.php',true);
-        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send('push=on');
-        syori_state = "book";
-        console.log("登録しました");
-    },false);
 
-    test_button2.addEventListener('click', () => {
-        xhr.open('post', 'http://localhost:8080/server/ajax.php',true);
+    function deleteUser(del_id){
+        confilmProcessing();
+        xhr.open('post', post_url,true);
         xhr.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
-        xhr.send('push2=on');
-        console.log("登録しました");
+        xhr.send('del_user_id='+del_id);
         syori_state = "user";
-    },false);
-    */
+    }
+
+    function deleteBook(del_id){
+        confilmProcessing();
+        xhr.open('post',post_url,true);
+        xhr.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
+        xhr.send('del_book_id='+del_id);
+        syori_state = "book";
+    }
 
     {
-        xhr.open('post', 'http://localhost:8080/server/ajax.php',true);
+        xhr.open('post', post_url,true);
         xhr.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
         xhr.send('push3=on');
         console.log("表示しました");
@@ -93,25 +87,38 @@
 
 
     //表示内容部分
-    function createTag(books){
-        while (create.firstChild) create.removeChild(create.firstChild);
-        for(var i=0; i < books.length; i++){
-           var pk = document.createElement('div');
-           pk.textContent = books[i];
-           create.appendChild(pk);
-        }
-    }
-    function createTag2(users){
-        while (book_hyoji.firstChild) book_hyoji.removeChild(book_hyoji.firstChild);
-        for(var i=0; i < users.length; i++){
-           var pk2 = document.createElement('div');
-           pk2.textContent = users[i];
-           book_hyoji.appendChild(pk2);
+    function createTagBook(books){
+        while (indicatebook.firstChild) indicatebook.removeChild(indicatebook.firstChild);
+        //indicatebook.innerHTML = "<tr><th>book一覧</th></tr>";
+        for(var i=0; i < books.length; i++) {
+            var createtr = document.createElement('tr');
+            createtr.innerHTML = "<td>" + books[i].title + "</td><td><button onclick='deleteBook("+ books[i].id +")'>削除</button></td>"
+            indicatebook.appendChild(createtr);
         }
     }
 
-    /*
-    del.addEventListener('click',  () => {
-        while (create.firstChild) create.removeChild(create.firstChild);
-    },false);
-    */
+    function createTagUser(users){
+        while (indicateuser.firstChild) indicateuser.removeChild(indicateuser.firstChild);
+        //indicateuser.innerHTML = "<tr><th>ユーザー一覧</th></tr>";
+        for(var i=0; i < users.length; i++){
+            var createtr = document.createElement('tr');
+            createtr.innerHTML = "<td>" + users[i].name + "</td><td><button onclick='deleteUser("+ users[i].id +")'>削除</button></td>"
+            indicateuser.appendChild(createtr);
+        }
+    }
+
+    //実行確認ダイアログ
+    function confilmProcessing(){
+        ret = confirm("実行します。本当によろしいですか?");
+        if (ret == false){
+            exit;
+        }
+    }
+
+    function clearText(){
+        document.getElementsByTagName("form")[0].reset();
+        document.getElementsByTagName("form")[1].reset();
+        hide();
+        //document.getElementById("book_registration").reset();
+
+    }

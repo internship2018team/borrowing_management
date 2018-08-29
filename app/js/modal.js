@@ -18,18 +18,14 @@ window.onload = () => {
     });
 
     for(let i = 0; i < close.length; i++){
-        close[i].addEventListener('click', () => {
-            book_registration_modal.className = 'hidden';
-            user_registration_modal.className = 'hidden';
-            mask.className = 'hidden';  
-      });
+        close[i].addEventListener('click',hide);
     }
 
-    mask.addEventListener('click', () => {
-    // modal.className = 'hidden';
-    // mask.className = 'hidden';
+    mask.addEventListener('click', hide);
+    
+    function hide(){
         book_registration_modal.className = 'hidden';
         user_registration_modal.className = 'hidden';
         mask.className = 'hidden';  
-    });
+    }
 };
