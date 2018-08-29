@@ -36,7 +36,7 @@ class Borrow_book {
     public function fetchLatestBooks() {
         try {
             $stmt = $this->_db->query($this->fetch_book_state_query);    
-            return $stmt->fetchAll(\PDO::FETCH_ASSOC);    
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC);
         } catch (\PDOException $e) {
             echo $e->getMessage();
         exit;
