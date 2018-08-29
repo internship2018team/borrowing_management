@@ -22,7 +22,7 @@ if (isset($_POST["search_query"])) {
 }
 sort($books);
 $books = json_decode(json_encode($books), true);
-$users = $bookApp->loadUsers();
+$users = $bookApp->loadAllUsers();
 ?>
 
 <!DOCTYPE html>

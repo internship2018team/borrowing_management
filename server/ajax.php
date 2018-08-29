@@ -10,7 +10,7 @@ if(isset($_POST['name'])){
     $user_name = $_POST['name'];
     $book->addUser($user_name);
     //登録後に更新された一覧を取得して返す
-    $user_lists = $book->loadUsers();
+    $user_lists = $book->loadAllUsers();
     //ヘッダーの設定
     header('Content-type:application/json; charset=utf8');
     //第二引数はUnicodeにエンコードしないため
@@ -23,7 +23,7 @@ if(isset($_POST['title'])){
     $book_name = $_POST['title'];
     $book->addBook($book_name);
     
-    $book_status = $book->loadBooks();
+    $book_status = $book->loadAllBooks();
     header('Content-type:application/json; charset=utf8');
 
     //第二引数はUnicodeにエンコードしないため
@@ -31,20 +31,20 @@ if(isset($_POST['title'])){
 }
 
 if(isset($_POST['push'])){
-    $book_lists = $book->loadBooks();
+    $book_lists = $book->loadAllBooks();
     header('Content-type:application/json; charset=utf8');
     echo json_encode($book_lists, JSON_UNESCAPED_UNICODE);
 }
 
 if(isset($_POST['push2'])){
-    $user_lists = $book->loadUsers();
+    $user_lists = $book->loadAllUsers();
     header('Content-type:application/json; charset=utf8');
     echo json_encode($user_lists, JSON_UNESCAPED_UNICODE);
 }
 
 if(isset($_POST['push3'])){
-    $book_lists = $book->loadBooks();
-    $user_lists = $book->loadUsers();
+    $book_lists = $book->loadAllBooks();
+    $user_lists = $book->loadAllUsers();
     $sum = array_merge($book_lists,$user_lists);
     header('Content-type:application/json; charset=utf8');
     echo json_encode($sum, JSON_UNESCAPED_UNICODE);
@@ -53,7 +53,7 @@ if(isset($_POST['push3'])){
 if(isset($_POST['del_user_id'])){
     $user_id = $_POST['del_user_id'];
     $book->deleteUser($user_id);
-    $user_lists = $book->loadUsers();
+    $user_lists = $book->loadAllUsers();
     header('Content-type:application/json; charset=utf8');
     echo json_encode($user_lists, JSON_UNESCAPED_UNICODE);
 }
@@ -61,7 +61,7 @@ if(isset($_POST['del_user_id'])){
 if(isset($_POST['del_book_id'])){
     $book_id = $_POST['del_book_id'];
     $book->deleteBook($book_id);
-    $book_lists = $book->loadBooks();
+    $book_lists = $book->loadAllBooks();
     header('Content-type:application/json; charset=utf8');
     echo json_encode($book_lists, JSON_UNESCAPED_UNICODE);
 }

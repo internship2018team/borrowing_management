@@ -43,7 +43,7 @@ class Borrow_book {
         }
     }
 
-    public function loadUsers(){
+    public function loadAllUsers(){
         try {
             $sql_query = 
                 "SELECT *
@@ -56,7 +56,7 @@ class Borrow_book {
         }
     }
 
-    public function loadBooks(){
+    public function loadAllBooks(){
         try {
             $sql_query = 
                 "SELECT *
@@ -87,7 +87,7 @@ class Borrow_book {
         exit;
         }
     }
-    
+
     public function returnBook($book_id){
         try {
             $this->_db->beginTransaction();
