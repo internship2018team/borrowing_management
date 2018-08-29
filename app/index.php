@@ -52,7 +52,7 @@ $users = $bookApp->loadAllUsers();
                 <tbody>
                     <!-- booklistの表示 -->
                     <?php foreach ($books as $book) : ?>
-                        <?php if($book['can_borrow'] || $book['can_borrow'] == NULL) : ?>
+                        <?php if($book['can_borrow']) : ?>
                         <!-- 貸し出し可能の場合 -->
                             <tr class='can_borrow'>
                                 <td class="title"><?php echo $book['title']; ?></td>

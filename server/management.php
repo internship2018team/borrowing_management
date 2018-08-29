@@ -7,20 +7,35 @@ class Borrow_book {
     private $fetch_book_state_query =
         "SELECT
             title,
-            books.id AS book_id,
-            histories.id AS history_id,
-            user_id,
-            date AS borrow_date,
-            can_borrow
-        FROM books
-        LEFT JOIN (
-            SELECT main.*
-            FROM borrowing_histories AS main
-            LEFT JOIN borrowing_histories AS sub
-            ON main.book_id = sub.book_id AND main.date < sub.date
-            WHERE sub.date IS NULL
-        ) AS histories
-        ON books.id = histories.book_id";
+            id AS book_id,
+            IFNULL(can_borrow, 1) AS can_borrow,
+            all_latest_borrowing_histories.user_id,
+            all_latest_borrowing_histories.date AS borrow_date
+        FROM
+            books
+        LEFT JOIN
+            (
+                SELECT
+                    borrowing_histories.book_id,
+                    borrowing_histories.can_borrow,
+                    borrowing_histories.user_id,
+                    borrowing_histories.date
+                FROM
+                    borrowing_histories
+                JOIN
+                    (
+                        SELECT
+                            max(id) AS id
+                        FROM
+                            borrowing_histories
+                        GROUP BY
+                            book_id
+                    ) AS latest_borrowing_histories
+                ON
+                    borrowing_histories.id = latest_borrowing_histories.id
+            ) AS all_latest_borrowing_histories
+        ON
+            books.id = all_latest_borrowing_histories.book_id";
         
 
     public function __construct() {
