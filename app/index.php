@@ -6,23 +6,23 @@ date_default_timezone_set('Asia/Tokyo');
 $bookApp = new \MyApp\Borrow_book();
 
 //貸出し処理後にリロード挟む
-if (isset($_POST["user_id"])) {
-    $bookApp->BookBorrow($_POST["book_id"],$_POST["user_id"]);
+if (isset($_POST["borrow_book_id"], $_POST["user_id"])) {
+    $bookApp->borrowBook($_POST["borrow_book_id"],$_POST["user_id"]);
     header(HEADER);
-} elseif (isset($_POST["history_id"])) {
-    $bookApp->BookReturn($_POST["history_id"]);
+} elseif (isset($_POST["return_book_id"])) {
+    $bookApp->returnBook($_POST["return_book_id"]);
     header(HEADER);
 }
 if (isset($_POST["search_query"])) {
     // 検索
-    $books = $bookApp->BookSearch($_POST["search_query"]);
+    $books = $bookApp->searchBook($_POST["search_query"]);
 } else {
     // 本のタイトル、book_id、貸し出し状況を取得
-    $books = $bookApp->getLatestBooks();
+    $books = $bookApp->fetchLatestBooks();
 }
 sort($books);
 $books = json_decode(json_encode($books), true);
-$users = $bookApp->getUser();
+$users = $bookApp->loadUsers();
 ?>
 
 <!DOCTYPE html>
@@ -67,17 +67,17 @@ $users = $bookApp->getUser();
                                     <option value=<?php echo $user['id']; ?>><?php echo $user['name']; ?></option>
                                     <?php endforeach; ?>
                                 </select>
-                                <input type="hidden" name="book_id" value="<?= $book['book_id']; ?>">
+                                <input type="hidden" name="borrow_book_id" value=<?= $book['book_id']; ?>>
                                 <input type="submit" value="借りる">
                             </form>
                             </td>
                         </tr>
-                        <!-- 貸し出し不可の場合 -->
+                        <!-- 貸し出し中の場合 -->
                         <?php else : ?>
                         <tr class="cannot_borrow">
                             <td class="title"><?php echo $book['title']; ?></td>
                             <form action="index.php" method="POST">
-                                <input type="hidden" name="history_id" value="<?= $book['history_id']; ?>">
+                                <input type="hidden" name="return_book_id" value=<?= $book['book_id']; ?>>
                                 <?php $user_id = $book['user_id']; ?>
                                 <?php foreach ($users as $user) : ?>
                                     <?php if ($user['id'] == $user_id) : ?>
