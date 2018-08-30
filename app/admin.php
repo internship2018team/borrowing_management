@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>管理者ページ</title>
-    <link rel="stylesheet" href="css/adminbase.css">
     <script src="js/modal.js"></script>
     <link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.indigo-pink.min.css">
     <script src="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.js"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="css/adminbase.css">
 </head>
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
@@ -18,15 +18,15 @@
       <span class="mdl-layout-title">管理者ページ</span>
     </div>
     <div class="mdl-layout__tab-bar mdl-js-ripple-effect">
-      <div id="book_registration_open" class="mdl-layout__tab">本の新規登録</div>
-      <div id="user_registration_open" class="mdl-layout__tab">ユーザー登録</div>
+      <div id="book_registration_open" class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect">本の新規登録</div>
+      <div id="user_registration_open" class="mdl-layout__tab mdl-button mdl-js-button mdl-js-ripple-effect">ユーザー登録</div>
     </div>
   </header>
   <div class="mdl-layout__drawer">
     <span class="mdl-layout-title">本の貸出管理アプリ</span>
     <nav class="mdl-navigation">
-      <a class="mdl-navigation__link" href="">貸出しページ</a>
-      <a class="mdl-navigation__link" href="">管理者ページ</a>
+      <a class="mdl-navigation__link" href="./index.php">貸出しページ</a>
+      <a class="mdl-navigation__link" href="./admin.php">管理者ページ</a>
     </nav>
   </div>
     <div id="book_registration_modal" class="hidden">
@@ -45,23 +45,23 @@
             </div>
             <input type="button" value="登録" onclick="registerBook()">
         </form>
-        <div class="close">
+        <div class="close mdl-button mdl-js-button mdl-js-ripple-effect">
             Close
         </div>
     </div>
     <div id="user_registration_modal" class="hidden">
         <form id ="user_registration" name="user_info" action="#" method="post" return false;>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input type="text" name="user_name" id="1"class="mdl-textfield__input">
+                <input type="text" name="user_name" id="1" class="mdl-textfield__input">
                 <label class="mdl-textfield__label" for="1">氏名...</label>
             </div>
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input type="text" name="user_chat" id="2"class="mdl-textfield__input">
+                <input type="text" name="user_chat" id="2" class="mdl-textfield__input">
                 <label class="mdl-textfield__label" for="2">chatwork_id</label>
             </div>
             <input type="button" value="登録" onclick="registerUser()">
         </form>
-        <div class="close">
+        <div class="close mdl-button mdl-js-button mdl-js-ripple-effect">
             Close
         </div>
     </div>

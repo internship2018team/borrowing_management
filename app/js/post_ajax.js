@@ -92,7 +92,7 @@
         for(var i=0; i < books.length; i++) {
             var createtr = document.createElement('tr');
             createtr.innerHTML = "<td class='mdl-data-table__cell--non-numeric'>" + books[i].title + 
-            "</td><td class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' onclick='deleteBook("+ books[i].id +")'>削除</td>"
+            "</td><td class='mdl-button mdl-js-button mdl-button--colored' onclick='deleteBook("+ books[i].id +")'>削除</td>"
             indicatebook.appendChild(createtr);
         }
     }
@@ -101,8 +101,8 @@
         while (indicateuser.firstChild) indicateuser.removeChild(indicateuser.firstChild);
         for(var i=0; i < users.length; i++){
             var createtr = document.createElement('tr');
-            createtr.innerHTML = "<td>" + users[i].name + 
-            "</td><td><button onclick='deleteUser("+ users[i].id +")'>削除</button></td>"
+            createtr.innerHTML = "<td class='mdl-data-table__cell--non-numeric'>" + users[i].name + 
+            "</td><td class='mdl-button mdl-js-button mdl-button--colored' onclick='deleteUser("+ users[i].id +")'>削除</td>"
             indicateuser.appendChild(createtr);
         }
     }
@@ -116,7 +116,7 @@
     }
 
     function clearText(){
-        document.getElementsByTagName("form")[0].reset();
-        document.getElementsByTagName("form")[1].reset();
+        //document.getElementsByTagName("form")[0].reset();
+        //document.getElementsByTagName("form")[1].reset();
         document.getElementsByClassName('close')[0].click();
     }
