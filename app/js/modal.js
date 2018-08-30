@@ -27,6 +27,8 @@ window.onload = () => {
     function hide(){
         book_registration_modal.className = 'hidden';
         user_registration_modal.className = 'hidden';
-        mask.className = 'hidden';  
+        mask.className = 'hidden';
+        document.getElementsByTagName("form")[0].reset();
+        document.getElementsByTagName("form")[1].reset();  
     }
 };
