@@ -3,7 +3,6 @@
     let indicatebook = document.getElementById('book_hyoji');
     const post_url = "http://localhost:8080/server/ajax.php";
 
-
     // 処理用変数
     var syori_state = "init";
     var json;
@@ -50,6 +49,7 @@
         xhr.send('name='+document.user_info.user_name.value);
         syori_state = "user";
         clearText();
+
     }
 
     function registerBook(){
@@ -89,20 +89,20 @@
     //表示内容部分
     function createTagBook(books){
         while (indicatebook.firstChild) indicatebook.removeChild(indicatebook.firstChild);
-        //indicatebook.innerHTML = "<tr><th>book一覧</th></tr>";
         for(var i=0; i < books.length; i++) {
             var createtr = document.createElement('tr');
-            createtr.innerHTML = "<td>" + books[i].title + "</td><td><button onclick='deleteBook("+ books[i].id +")'>削除</button></td>"
+            createtr.innerHTML = "<td class='mdl-data-table__cell--non-numeric'>" + books[i].title + 
+            "</td><td class='mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect' onclick='deleteBook("+ books[i].id +")'>削除</td>"
             indicatebook.appendChild(createtr);
         }
     }
 
     function createTagUser(users){
         while (indicateuser.firstChild) indicateuser.removeChild(indicateuser.firstChild);
-        //indicateuser.innerHTML = "<tr><th>ユーザー一覧</th></tr>";
         for(var i=0; i < users.length; i++){
             var createtr = document.createElement('tr');
-            createtr.innerHTML = "<td>" + users[i].name + "</td><td><button onclick='deleteUser("+ users[i].id +")'>削除</button></td>"
+            createtr.innerHTML = "<td>" + users[i].name + 
+            "</td><td><button onclick='deleteUser("+ users[i].id +")'>削除</button></td>"
             indicateuser.appendChild(createtr);
         }
     }
@@ -111,14 +111,12 @@
     function confilmProcessing(){
         ret = confirm("実行します。本当によろしいですか?");
         if (ret == false){
-            exit;
+            preventDefault();
         }
     }
 
     function clearText(){
         document.getElementsByTagName("form")[0].reset();
         document.getElementsByTagName("form")[1].reset();
-        hide();
-        //document.getElementById("book_registration").reset();
-
+        document.getElementsByClassName('close')[0].click();
     }
