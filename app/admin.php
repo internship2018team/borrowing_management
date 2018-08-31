@@ -43,11 +43,11 @@
                 <input type="text" name="book_genre" id="5"class="mdl-textfield__input">
                 <label class="mdl-textfield__label" for="5">ジャンル...</label>
             </div>
-            <input type="button" value="登録" onclick="registerBook()">
+            <div class="form_button">
+                <input type="button" class="regist_button mdl-button mdl-js-button mdl-js-ripple-effect" value="登録" onclick="registerBook()">
+                <div class="mdl-button mdl-js-button mdl-js-ripple-effect">Close</div>
+            </div>
         </form>
-        <div class="close mdl-button mdl-js-button mdl-js-ripple-effect">
-            Close
-        </div>
     </div>
     <div id="user_registration_modal" class="hidden">
         <form id ="user_registration" name="user_info" action="#" method="post" return false;>
@@ -59,20 +59,18 @@
                 <input type="text" name="user_chat" id="2" class="mdl-textfield__input">
                 <label class="mdl-textfield__label" for="2">chatwork_id</label>
             </div>
-            <input type="button" value="登録" onclick="registerUser()">
+            <input type="button" class="regist_button mdl-button mdl-js-button mdl-js-ripple-effect" value="登録" onclick="registerUser()">
+            <div class="close mdl-button mdl-js-button mdl-js-ripple-effect">Close</div>
         </form>
-        <div class="close mdl-button mdl-js-button mdl-js-ripple-effect">
-            Close
-        </div>
     </div>
     <div id="mask" class="hidden"></div>
     <div class = "block">
         <div class="article_column">
-            <div>book一覧</div>
+            <div class="list_title">book一覧</div>
             <table id="book_hyoji" class="flex_column mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp"></table>
         </div>
         <div class="article_column">
-            <div>ユーザ一覧</div>
+            <div class="list_title">ユーザ一覧</div>
             <table id="user_hyoji" class="flex_column mdl-data-table mdl-js-data-table mdl-data-table--selectable mdl-shadow--2dp"></table>
         </div>
     </div>
