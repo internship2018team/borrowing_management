@@ -45,8 +45,8 @@ $users = $bookApp->loadAllUsers();
     </head>
     <body>
         <!-- Uses a header that contracts as the page scrolls down. -->
-        <div class="demo-layout-waterfall mdl-layout mdl-js-layout">
-        <header class="mdl-layout__header mdl-layout__header--waterfall">
+        <div class="mdl-layout mdl-js-layout">
+        <header class="mdl-layout__header">
             <!-- Top row, always visible -->
             <div class="mdl-layout__header-row">
             <!-- Title -->
@@ -71,8 +71,8 @@ $users = $bookApp->loadAllUsers();
             </div>
             </div>
             <!-- Bottom row, not visible on scroll -->
-            <!-- <div class="mdl-layout__header-row">
-            <div class="mdl-layout-spacer"></div>
+            <div class="adjustment mdl-layout__header-row">
+            <!-- <div class="mdl-layout-spacer"></div>
             <nav class="mdl-navigation">
             </nav>
             </div> -->
