@@ -45,7 +45,7 @@
             </div>
             <div class="form_button">
                 <input type="button" class="regist_button mdl-button mdl-js-button mdl-js-ripple-effect" value="登録" onclick="registerBook()">
-                <div class="mdl-button mdl-js-button mdl-js-ripple-effect">Close</div>
+                <div class="close mdl-button mdl-js-button mdl-js-ripple-effect">Close</div>
             </div>
         </form>
     </div>
