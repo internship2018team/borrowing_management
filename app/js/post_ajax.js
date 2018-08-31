@@ -1,7 +1,7 @@
     let xhr = new XMLHttpRequest();
     let indicateuser = document.getElementById('user_hyoji');
     let indicatebook = document.getElementById('book_hyoji');
-    const post_url = "http://localhost:8080/server/ajax.php";
+    const post_url = "http://fun.eg-share.com/borrowing_management/server/ajax.php";
 
     // 処理用変数
     var syori_state = "init";

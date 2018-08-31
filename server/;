@@ -1,0 +1,8 @@
+<?php
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
+define('DB_DATABASE', 'book_borrowing_app');
+define('DB_USERNAME', 'dev');
+define('DB_PASSWORD', '#oVB2rGJhUzPWVHPJ');
+define('PDO_DSN', 'mysql:host=mysql;dbname=' . DB_DATABASE);
+define('HEADER', 'Location:./index.php');
