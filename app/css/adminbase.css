@@ -6,16 +6,6 @@ body {
   background-color: #e0f7fa;
 }
 
-.close{
-  cursor: pointer;
-  width: 200px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  text-align: center;
-  line-height: 40px;
-  margin: 15px auto 0;
-}
-
 #mask {
     background: rgba(0, 0, 0, 0.4);
     position: fixed;
@@ -88,3 +78,8 @@ body {
 .mdl-layout__tab{
   margin-right:3px;
 }
+
+.list_title{
+  font-size:20px;
+  margin-bottom:3px;
+} 
